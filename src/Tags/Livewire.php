@@ -40,16 +40,17 @@ class Livewire extends Tags
         }
 
         if (! isset($_instance)) {
-            $html = \Livewire\Livewire::mount($expression, $parameters->toArray())->html();
+            $html = \Livewire\Livewire::mount($expression, $parameters->toArray());
         } elseif ($_instance->childHasBeenRendered($cachedKey)) {
             $componentId  = $_instance->getRenderedChildComponentId($cachedKey);
             $componentTag = $_instance->getRenderedChildComponentTagName($cachedKey);
             $html         = \Livewire\Livewire::dummyMount($componentId, $componentTag);
             $_instance->preserveRenderedChild($cachedKey);
         } else {
-            $response = \Livewire\Livewire::mount($expression, $parameters->toArray());
-            $html     = $response->html();
-            $_instance->logRenderedChild($cachedKey, $response->id(), \Livewire\Livewire::getRootElementTagName($html));
+            $response = $html = \Livewire\Livewire::mount($expression, $parameters->toArray());
+            // TODO: how to get $response->id() with v3
+            // $html     = $response->html();
+            // $_instance->logRenderedChild($cachedKey, $response->id(), \Livewire\Livewire::getRootElementTagName($html));
         }
         return $html;
     }
